@@ -14,16 +14,16 @@ class AuthController extends Controller
         $request->validate([
             "name" => "required|string",
             "email" => "required|unique:users",
-            "password" => "required|string"
+            "password" => "required|string",
+            "role_id" => "required|exists:roles,id"
         ]);
 
         $user = User::create([
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password),
+            "role_id" => $request->role_id,
         ]);
-
-        $token = $user->createToken("auth_token")->plainTextToken;
 
         return response()->json([
             "message" => "Registred Successfully",
@@ -38,7 +38,7 @@ class AuthController extends Controller
             "password" => "required",
         ]);
 
-        $user = User::where("email", $request->email)->first();
+        $user = User::with('role')->where("email", $request->email)->first();
 
         if (!$user) {
             return response()->json([
