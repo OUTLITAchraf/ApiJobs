@@ -13,17 +13,16 @@ class AuthController extends Controller
     {
         $request->validate([
             "name" => "required|string",
-            "email" => "required|unique:users",
-            "password" => "required|string",
-            "role_id" => "required|exists:roles,id"
+            "email" => "required|email|unique:users",
+            "password" => "required|string|confirmed",
         ]);
 
         $user = User::create([
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password),
-            "role_id" => $request->role_id,
         ]);
+        $user->assignRole('admin');
 
         return response()->json([
             "message" => "Registred Successfully",
@@ -34,22 +33,16 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            "email" => "required",
-            "password" => "required",
+            "email" => "required|email",
+            "password" => "required|string",
         ]);
 
-        $user = User::with('role')->where("email", $request->email)->first();
+        $user = User::with('roles')->where("email", $request->email)->first();
 
-        if (!$user) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
-                "message" => "Email is incorrect"
-            ]);
-        }
-
-        if (!Hash::check($request->password, $user->password)) {
-            return response()->json([
-                "message" => "Password is incorrect"
-            ]);
+                "message" => "Invalid credentials"
+            ], 401);
         }
 
         $token = $user->createToken("auth_token")->plainTextToken;
@@ -58,10 +51,11 @@ class AuthController extends Controller
             "message" => "Logged Successfully",
             "user" => $user,
             "token" => $token,
-        ], 201);
+        ], 200);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         $request->user()->tokens()->delete();
 
         return response()->json([

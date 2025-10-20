@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    $user = $request->user()->load('role');
+    $user = $request->user()->load('roles');
     return response()->json([
         'user' => $user
     ]);
