@@ -207,7 +207,7 @@
                                                     },
                                                     "description": {
                                                         "type": "string",
-                                                        "example": "Text"
+                                                        "example": "Description of offer"
                                                     },
                                                     "company_name": {
                                                         "type": "string",
@@ -223,7 +223,7 @@
                                                     },
                                                     "type": {
                                                         "type": "string",
-                                                        "example": "job"
+                                                        "example": "Type of offer"
                                                     },
                                                     "employer_id": {
                                                         "type": "integer",
@@ -539,6 +539,110 @@
                     },
                     "404": {
                         "description": "Offer not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/offers/search": {
+            "get": {
+                "tags": [
+                    "Offer"
+                ],
+                "summary": "Search offers by title or company name or location",
+                "operationId": "c5dd676ae1d7ec92b7316f9b6e90dddc",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Search by offer title",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "company_name",
+                        "in": "query",
+                        "description": "Search by company name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "description": "Search by location",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Title Offer"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Description of offer"
+                                                    },
+                                                    "company_name": {
+                                                        "type": "string",
+                                                        "example": "Company Name"
+                                                    },
+                                                    "location": {
+                                                        "type": "string",
+                                                        "example": "Company Location"
+                                                    },
+                                                    "salary": {
+                                                        "type": "string",
+                                                        "example": "1000.00"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "example": "Type of offer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "current_page": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 10
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No offers found matching your search."
                     }
                 },
                 "security": [

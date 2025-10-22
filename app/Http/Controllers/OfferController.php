@@ -24,11 +24,11 @@ class OfferController extends Controller
      *                     type="object",
      *                     @OA\Property(property="id", type="integer", example=1),
      *                     @OA\Property(property="title", type="string", example="Offre Title"),
-     *                     @OA\Property(property="description", type="string", example="Text"),
+     *                     @OA\Property(property="description", type="string", example="Description of offer"),
      *                     @OA\Property(property="company_name", type="string", example="Name Company"),
      *                     @OA\Property(property="location", type="string", example="Location of Company"),
      *                     @OA\Property(property="salary", type="string", example="1000.00"),
-     *                     @OA\Property(property="type", type="string", example="job"),
+     *                     @OA\Property(property="type", type="string", example="Type of offer"),
      *                     @OA\Property(property="employer_id", type="integer", example=1)
      *                 )
      *             ),
@@ -75,7 +75,8 @@ class OfferController extends Controller
      * )
      */
 
-    public function show($id){
+    public function show($id)
+    {
         $offer = Offer::findOrFail($id);
         $offer->load('user');
 
@@ -255,6 +256,90 @@ class OfferController extends Controller
         return response()->json([
             "message" => "Offer Deleted Successfully",
             "offer" => $offer
+        ], 201);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/offers/search",
+     *     tags={"Offer"},
+     *     summary="Search offers by title or company name or location",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="title",
+     *         in="query",
+     *         description="Search by offer title",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="company_name",
+     *         in="query",
+     *         description="Search by company name",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="location",
+     *         in="query",
+     *         description="Search by location",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="title", type="string", example="Title Offer"),
+     *                     @OA\Property(property="description", type="string", example="Description of offer"),
+     *                     @OA\Property(property="company_name", type="string", example="Company Name"),
+     *                     @OA\Property(property="location", type="string", example="Company Location"),
+     *                     @OA\Property(property="salary", type="string", example="1000.00"),
+     *                     @OA\Property(property="type", type="string", example="Type of offer")
+     *                 )
+     *             ),
+     *             @OA\Property(property="current_page", type="integer", example=1),
+     *             @OA\Property(property="per_page", type="integer", example=10)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No offers found matching your search."
+     *     )
+     * )
+     */
+
+    public function search(Request $request)
+    {
+        $query = Offer::query();
+
+        if ($request->has('title')) {
+            $query->where('title', 'LIKE', '%' . $request->title . '%');
+        }
+
+        if ($request->has('company_name')) {
+            $query->where('company_name', 'LIKE', '%' . $request->company_name . '%');
+        }
+
+        if ($request->has('location')) {
+            $query->where('location', 'LIKE', '%' . $request->location . '%');
+        }
+
+        $offers = $query->get();
+
+        if ($offers->isEmpty()) {
+            return response()->json([
+                "message" => "No offers found matching your search."
+            ], 404);
+        }
+
+        return response()->json([
+            "message" => "Offers Fetched Successfully",
+            "offers" => $offers
         ], 201);
     }
 }

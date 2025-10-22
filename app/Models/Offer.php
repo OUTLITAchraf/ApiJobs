@@ -19,6 +19,10 @@ class Offer extends Model
         'employer_id'
     ];
 
+    protected $hidden = [
+        'employer_id'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'employer_id');

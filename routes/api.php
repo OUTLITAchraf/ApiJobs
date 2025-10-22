@@ -28,6 +28,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/offers/search', [OfferController::class, 'search']);
     Route::get('/offers', [OfferController::class, 'index']);
     Route::get('/offer/{offer}', [OfferController::class, 'show']);
 });
