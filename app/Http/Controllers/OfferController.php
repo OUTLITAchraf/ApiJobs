@@ -75,10 +75,23 @@ class OfferController extends Controller
      * )
      */
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $offer = Offer::findOrFail($id);
-        $offer->load('user');
+
+        $user = $request->user();
+        $user->load('roles');
+
+        if ($user->roles->contains('name', 'admin')) {
+            $offer = Offer::findOrFail($id);
+            $offer->load('employer','applications.user');
+        } elseif ($user->roles->contains('name', 'employer')) {
+            $offer = Offer::findOrFail($id);
+            $offer->load('applications.user');
+        } else {
+            $offer = Offer::findOrFail($id);
+            $offer->load('employer');
+        }
+
 
         return response()->json([
             "message" => "Offer Fetched Successfully",
