@@ -24,7 +24,7 @@ class ApplicationController extends Controller
         ], 201);
     }
 
-    
+
     public function store(Request $request,Offer $offer){
         $user = $request->user();
 
@@ -41,6 +41,21 @@ class ApplicationController extends Controller
         return response()->json([
             'message' => 'Application submitted successfully',
             'application' => $application
+        ], 201);
+    }
+
+    public function update(Request $request,Application $application){
+
+        $validated = $request->validate([
+            "status" => "required|string|in:accepted,rejected"
+        ]);
+
+        $application->update($validated);
+        $application->load('offer','user');
+
+        return response()->json([
+            "message" => "Status Application Updated Successfully",
+            "application" => $application
         ], 201);
     }
 }

@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum', 'role:employer|admin'])->group(function () {
     Route::post('/create-offer', [OfferController::class, 'store']);
     Route::put('/update-offer/{offer}', [OfferController::class, 'update']);
     Route::delete('/delete-offer/{offer}', [OfferController::class, 'destroy']);
+    Route::put('/update-application/{application}',[ApplicationController::class, 'update']);
 });
 
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
