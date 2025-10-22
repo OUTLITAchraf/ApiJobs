@@ -19,7 +19,17 @@ use Illuminate\Routing\Controller as BaseController;
  *     url="http://localhost:8000/api",
  *     description="Local API Server"
  * )
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     description="Use token from login",
+ *     name="Authorization",
+ *     in="header",
+ *     scheme="bearer",
+ *      bearerFormat="JWT",
+ *     securityScheme="bearerAuth"
+ * )
  */
+
 
 class Controller extends BaseController
 {

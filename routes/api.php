@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OfferController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     ]);
 });
 
-Route::post('/register',[AuthController::class, 'register']);
-Route::post('/login',[AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/logout',[AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/offers', [OfferController::class, 'index']);
+    Route::get('/offer/{offer}', [OfferController::class, 'show']);
+});
+Route::middleware(['auth:sanctum', 'role:employer|admin'])->group(function () {
+    Route::post('/create-offer', [OfferController::class, 'store']);
+    Route::put('/update-offer/{offer}', [OfferController::class, 'update']);
+    Route::delete('/delete-offer/{offer}', [OfferController::class, 'destroy']);
+});

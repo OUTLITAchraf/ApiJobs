@@ -7,17 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-/**
- * @OA\SecurityScheme(
- *     type="http",
- *     description="Use token from login",
- *     name="Authorization",
- *     in="header",
- *     scheme="bearer",
- *     bearerFormat="JWT",
- *     securityScheme="sanctum"
- * )
- */
 
 class AuthController extends Controller
 {
@@ -54,6 +43,7 @@ class AuthController extends Controller
             "name" => "required|string",
             "email" => "required|email|unique:users",
             "password" => "required|string|confirmed",
+            "role" => "string|in:employer"
         ]);
 
         $user = User::create([
@@ -61,7 +51,8 @@ class AuthController extends Controller
             "email" => $request->email,
             "password" => Hash::make($request->password),
         ]);
-        $user->assignRole('admin');
+        $role = $request->role?$request->role:"user";
+        $user->assignRole($role);
 
         return response()->json([
             "message" => "Registred Successfully",
@@ -130,7 +121,7 @@ class AuthController extends Controller
      *     path="/logout",
      *     summary="Logout user",
      *     tags={"Auth"},
-     *     security={{"sanctum":{}}},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(response=200, description="Logged out successfully")
      * )
      */

@@ -170,7 +170,380 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/offers": {
+            "get": {
+                "tags": [
+                    "Offer"
+                ],
+                "summary": "Get offers",
+                "operationId": "bdad571f0002bd181030c18b357c39f1",
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Offers Fetched Successfully"
+                                        },
+                                        "offers": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Offre Title"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Text"
+                                                    },
+                                                    "company_name": {
+                                                        "type": "string",
+                                                        "example": "Name Company"
+                                                    },
+                                                    "location": {
+                                                        "type": "string",
+                                                        "example": "Location of Company"
+                                                    },
+                                                    "salary": {
+                                                        "type": "string",
+                                                        "example": "1000.00"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "example": "job"
+                                                    },
+                                                    "employer_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/offer/{id}": {
+            "get": {
+                "tags": [
+                    "Offer"
+                ],
+                "summary": "Get detail an offer",
+                "operationId": "fe47cf50ce87a530bf2a7dc11b4a86ad",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Offer ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Offer Fetched Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Offer Fetched Successfully"
+                                        },
+                                        "offer": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Offer not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/create-offer": {
+            "post": {
+                "tags": [
+                    "Offer"
+                ],
+                "summary": "Create a new offer",
+                "operationId": "1513d148110ecdc229f1291318f19916",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "company_name",
+                                    "location",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "New Offer"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Text Description"
+                                    },
+                                    "company_name": {
+                                        "type": "string",
+                                        "example": "Company Name"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "Company Location"
+                                    },
+                                    "salary": {
+                                        "type": "string",
+                                        "example": "5000.00"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "job"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Offer created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Offer Created Successfully"
+                                        },
+                                        "offer": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "New Offer"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Text Description"
+                                                },
+                                                "company_name": {
+                                                    "type": "string",
+                                                    "example": "Company Name"
+                                                },
+                                                "location": {
+                                                    "type": "string",
+                                                    "example": "Company Location"
+                                                },
+                                                "salary": {
+                                                    "type": "string",
+                                                    "example": "5000.00"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "job"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/update-offer/{id}": {
+            "put": {
+                "tags": [
+                    "Offer"
+                ],
+                "summary": "Update existing offer",
+                "operationId": "6c827ee1015532bfe764b1f704e506d3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Offer ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "company_name",
+                                    "location",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Update Offer"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "New Text Description"
+                                    },
+                                    "company_name": {
+                                        "type": "string",
+                                        "example": "New Company Name"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "New Company Location"
+                                    },
+                                    "salary": {
+                                        "type": "string",
+                                        "example": "1000.00"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "internship"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Offer updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Offer Updated Successfully"
+                                        },
+                                        "offer": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Offer not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/delete-offer/{id}": {
+            "delete": {
+                "tags": [
+                    "Offer"
+                ],
+                "summary": "Delete an offer",
+                "operationId": "def3904d7b8ead8936cc307c82b59a58",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Offer ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Offer deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Offer Deleted Successfully"
+                                        },
+                                        "offer": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Offer not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -178,7 +551,7 @@
     },
     "components": {
         "securitySchemes": {
-            "sanctum": {
+            "bearerAuth": {
                 "type": "http",
                 "description": "Use token from login",
                 "name": "Authorization",
@@ -192,6 +565,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Offer",
+            "description": "Offer"
         }
     ]
 }
