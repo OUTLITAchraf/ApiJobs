@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +37,10 @@ Route::middleware(['auth:sanctum', 'role:employer|admin'])->group(function () {
     Route::post('/create-offer', [OfferController::class, 'store']);
     Route::put('/update-offer/{offer}', [OfferController::class, 'update']);
     Route::delete('/delete-offer/{offer}', [OfferController::class, 'destroy']);
+});
+
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
+    Route::get('/users',[UserController::class, 'index']);
+    Route::put('/update-user/{user}',[UserController::class, 'update']);
+    Route::delete('/delete-user/{user}',[UserController::class, 'destroy']);
 });
