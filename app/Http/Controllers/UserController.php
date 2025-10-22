@@ -39,6 +39,14 @@ class UserController extends Controller
         ], 201);
     }
 
+    public function show($id){
+        $user = User::findOrFail($id);
+        $user->load('applications.offer');
+        return response()->json([
+            "message" => "User Retrieved Successfully",
+            "user" => $user
+        ], 201);
+    }
 
     /**
      * @OA\Put(
