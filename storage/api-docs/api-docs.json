@@ -15,6 +15,177 @@
         }
     ],
     "paths": {
+        "/my-applications": {
+            "get": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Get applications of auth user",
+                "operationId": "5ad82cda506fd920a4d4d544b903e44f",
+                "responses": {
+                    "201": {
+                        "description": "Applications Fetched Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Applications Fetched Successfully"
+                                        },
+                                        "applications": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/offer/{id}/apply": {
+            "post": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Apply in an offer",
+                "operationId": "97f6be340c415c01e5788aa1e4d367d8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Offer ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "cv_url"
+                                ],
+                                "properties": {
+                                    "cv_url": {
+                                        "type": "string",
+                                        "example": "https://example.com/cv.pdf"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Application submitted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Application submitted successfully"
+                                        },
+                                        "application": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/update-application/{id}": {
+            "put": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Update status application",
+                "operationId": "b7e42577390f8a33e2dfefddc9478b3c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Application ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "example": "accepted or rejected"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Status Application Updated Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Status Application Updated Successfully"
+                                        },
+                                        "application": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Application not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/register": {
             "post": {
                 "tags": [
@@ -652,13 +823,13 @@
                 ]
             }
         },
-        "/users": {
+        "/admin/users": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Get users list",
-                "operationId": "7e2f5799553ec93c9c43e2a58490d447",
+                "operationId": "b2c82e7c972ca4c5910b82f3c498d9ea",
                 "responses": {
                     "201": {
                         "description": "Successful operation",
@@ -704,13 +875,62 @@
                 ]
             }
         },
-        "/update-user/{id}": {
+        "/admin/user/{id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get detail an user",
+                "operationId": "b04ab9c3c97fa16f250996451e435373",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User Fetched Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User Fetched Successfully"
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/admin/update-user/{id}": {
             "put": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Update existing user",
-                "operationId": "51981b7fc6f4e446d171c603b8e51b69",
+                "operationId": "a4eab2c8e3611448e0d52dd81db0aca7",
                 "parameters": [
                     {
                         "name": "id",
@@ -781,13 +1001,13 @@
                 ]
             }
         },
-        "/delete-user/{id}": {
+        "/admin/delete-user/{id}": {
             "delete": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Delete an user",
-                "operationId": "3ecff52cad0c39bb98cae80b5404ce55",
+                "operationId": "8f54830915ab491a8edbe1253040293e",
                 "parameters": [
                     {
                         "name": "id",
@@ -844,6 +1064,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Application",
+            "description": "Application"
+        },
         {
             "name": "Auth",
             "description": "Auth"

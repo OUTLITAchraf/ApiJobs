@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     /**
      * @OA\GET(
-     *     path="/users",
+     *     path="/admin/users",
      *     summary="Get users list",
      *     tags={"User"},
      *     security={{"bearerAuth":{}}},    
@@ -39,6 +39,34 @@ class UserController extends Controller
         ], 201);
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/admin/user/{id}",
+     *     tags={"User"},
+     *     summary="Get detail an user",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="User ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User Fetched Successfully",
+     *         @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="User Fetched Successfully"),
+     *             @OA\Property(property="user", type="object")
+     *         ) 
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     ),
+     * )
+     */
     public function show($id){
         $user = User::findOrFail($id);
         $user->load('applications.offer');
@@ -50,7 +78,7 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/update-user/{id}",
+     *     path="/admin/update-user/{id}",
      *     tags={"User"},
      *     summary="Update existing user",
      *     security={{"bearerAuth":{}}},
@@ -102,7 +130,7 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/delete-user/{id}",
+     *     path="/admin/delete-user/{id}",
      *     tags={"User"},
      *     summary="Delete an user",
      *     security={{"bearerAuth":{}}},
