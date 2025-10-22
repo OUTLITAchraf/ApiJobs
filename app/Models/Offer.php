@@ -20,11 +20,17 @@ class Offer extends Model
     ];
 
     protected $hidden = [
-        'employer_id'
+        'employer_id',
+        'created_at',
+        'updated_at'
     ];
 
-    public function user()
+    public function employer()
     {
         return $this->belongsTo(User::class, 'employer_id');
+    }
+
+    public function applications(){
+        return $this->hasMany(Application::class, 'offer_id');
     }
 }

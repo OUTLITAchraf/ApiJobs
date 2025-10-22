@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\UserController;
@@ -32,6 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/offers/search', [OfferController::class, 'search']);
     Route::get('/offers', [OfferController::class, 'index']);
     Route::get('/offer/{offer}', [OfferController::class, 'show']);
+    Route::post('/offer/{offer}/apply',[ApplicationController::class, 'store']);
+    Route::get('/my-applications',[ApplicationController::class, 'myapplications']);
 });
 Route::middleware(['auth:sanctum', 'role:employer|admin'])->group(function () {
     Route::post('/create-offer', [OfferController::class, 'store']);

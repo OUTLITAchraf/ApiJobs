@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function offers() {
         return $this->hasMany(Offer::class);
     }
+
+    public function applications(){
+        return $this->hasMany(Application::class, 'user_id');
+    }
 }
