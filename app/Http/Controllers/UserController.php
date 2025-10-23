@@ -35,7 +35,7 @@ class UserController extends Controller
         $users = User::where('name','!=','Admin')->get();
         return response()->json([
             "message" => "Users Retrieved Successfully",
-            "users" => $users,
+            "users" => $users->load('roles'),
         ], 201);
     }
 

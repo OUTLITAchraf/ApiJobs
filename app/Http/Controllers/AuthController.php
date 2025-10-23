@@ -122,7 +122,13 @@ class AuthController extends Controller
      *     summary="Logout user",
      *     tags={"Auth"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\Response(response=200, description="Logged out successfully")
+     *     @OA\Response(
+     *          response=200, 
+     *          description="Logged out successfully"
+     *          @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Logged out Successfully"),
+     *             @OA\Property(property="user", type="object"),
+     *         ))
      * )
      */
     public function logout(Request $request)
@@ -130,7 +136,8 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
 
         return response()->json([
-            "message" => "Logouted Successfully"
+            "message" => "Logouted Successfully",
+            "user" => $request->user()
         ], 201);
     }
 }
