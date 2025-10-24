@@ -212,8 +212,10 @@ class OfferController extends Controller
 
     public function update(Request $request, $id)
     {
-
+        
         $offer = Offer::findOrFail($id);
+
+        $this->authorize('update', $offer);
 
         $validated = $request->validate([
             'title' => 'required|string',
@@ -264,6 +266,8 @@ class OfferController extends Controller
     {
 
         $offer = Offer::findOrFail($id);
+        $this->authorize('delete', $offer);
+
         $offer->delete();
 
         return response()->json([
